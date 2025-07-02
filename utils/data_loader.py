@@ -1,10 +1,23 @@
 from glob import glob
 import pandas as pd
+import os
 
 
 def load_subtitles_dataset(dataset_path):
-    subtitles_paths = glob(dataset_path + '/*.ass')
+    dataset_path = os.path.abspath(dataset_path)
+    print(f"Loading subtitles from: {dataset_path}")
 
+    if not os.path.exists(dataset_path):
+        print("❌ ERROR: Path does not exist.")
+        return pd.DataFrame()
+    
+    subtitles_paths = glob(dataset_path + '/*.ass')
+    print(f"Found {len(subtitles_paths)} .ass files")
+
+    if not subtitles_paths:
+        print("❌ No subtitle files found.")
+        return pd.DataFrame()
+    
     scripts = []
     episode_num = []
 
